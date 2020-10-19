@@ -9,6 +9,7 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def create
+    ActiveRecord::Base.connection.reset_pk_sequence!('merchants')
     render json: Merchant.create(merchant_params)
   end
 
