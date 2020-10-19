@@ -9,7 +9,7 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def create
-    # ActiveRecord::Base.connection.reset_pk_sequence!('items')
+    ActiveRecord::Base.connection.reset_pk_sequence!('items')
     # Item.create(item_params)
     # render json: ItemSerializer.new(Item.last)
     render json: Item.create(item_params)
