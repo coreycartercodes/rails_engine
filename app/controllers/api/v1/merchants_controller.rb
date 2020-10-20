@@ -1,7 +1,12 @@
 class Api::V1::MerchantsController < ApplicationController
 
   def index
-    render json: MerchantSerializer.new(Merchant.all)
+    if params[:item_id]
+      @item = Item.find(params[:item_id])
+      render json: MerchantSerializer.new(@item.merchant)
+    else
+      render json: MerchantSerializer.new(Merchant.all)
+    end
   end
 
   def show
@@ -19,13 +24,14 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def destroy
-    render json: Merchant.destroy(params[:id])
+    Merchant.destroy(params[:id])
+    head :no_content
   end
 
   private
 
   def merchant_params
-    params.require(:merchant).permit(:name)
+    params.permit(:name)
   end
 
 end
