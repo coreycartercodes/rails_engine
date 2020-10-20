@@ -32,6 +32,8 @@ gem 'rack-cors'
 
 # Rubocop
 gem 'rubocop', require: false
+gem 'fast_jsonapi'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -40,6 +42,7 @@ group :development, :test do
   gem 'faker'
   gem 'rspec-rails'
   gem 'pry'
+  gem 'shoulda-matchers'
 end
 
 group :development do
