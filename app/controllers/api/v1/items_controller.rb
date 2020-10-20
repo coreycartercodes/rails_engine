@@ -15,7 +15,7 @@ class Api::V1::ItemsController < ApplicationController
 
   def create
     ActiveRecord::Base.connection.reset_pk_sequence!('items')
-    new_item = Item.create(item_params)
+    new_item = Item.create!(item_params)
     render json: ItemSerializer.new(new_item) if new_item.save
   end
 
@@ -24,12 +24,13 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def destroy
-    render json: Item.destroy(params[:id])
+    Item.destroy(params[:id])
+    head :no_content
   end
 
   private
 
   def item_params
-    params.require(:item).permit(:name, :description, :unit_price, :merchant_id)
+    params.permit(:name, :description, :unit_price, :merchant_id)
   end
 end
