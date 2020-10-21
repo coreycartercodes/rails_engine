@@ -39,7 +39,7 @@ describe 'New API' do
   it 'Can create an merchant' do
     merchant_params = { name: 'Mike Dao' }
 
-    post '/api/v1/merchants', params: { merchant: merchant_params }
+    post '/api/v1/merchants', params: merchant_params
 
     expect(response).to be_successful
 
@@ -51,9 +51,9 @@ describe 'New API' do
     id = create(:merchant).id
     previous_name = Merchant.last.name
     merchant_params = { name: "Mike Dao" }
-    headers = {"CONTENT_TYPE" => "application/json"}
+    # headers = {"CONTENT_TYPE" => "application/json"}
   
-    patch "/api/v1/merchants/#{id}", headers: headers, params: JSON.generate({merchant: merchant_params})
+    patch "/api/v1/merchants/#{id}", params: merchant_params
     merchant = Merchant.find_by(id: id)
   
     expect(response).to be_successful
