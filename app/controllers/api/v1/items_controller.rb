@@ -15,7 +15,7 @@ class Api::V1::ItemsController < ApplicationController
 
   def create
     ActiveRecord::Base.connection.reset_pk_sequence!('items')
-    new_item = Item.create!(item_params)
+    new_item = Item.new(item_params)
     render json: ItemSerializer.new(new_item) if new_item.save
   end
 
