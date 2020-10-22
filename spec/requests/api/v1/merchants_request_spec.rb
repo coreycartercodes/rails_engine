@@ -39,7 +39,7 @@ describe 'New API' do
   it 'Can create an merchant' do
     merchant_params = { name: 'Mike Dao' }
 
-    post '/api/v1/merchants', params: { merchant: merchant_params }
+    post '/api/v1/merchants', params: merchant_params
 
     expect(response).to be_successful
 
@@ -51,9 +51,9 @@ describe 'New API' do
     id = create(:merchant).id
     previous_name = Merchant.last.name
     merchant_params = { name: "Mike Dao" }
-    headers = {"CONTENT_TYPE" => "application/json"}
+    # headers = {"CONTENT_TYPE" => "application/json"}
   
-    patch "/api/v1/merchants/#{id}", headers: headers, params: JSON.generate({merchant: merchant_params})
+    patch "/api/v1/merchants/#{id}", params: merchant_params
     merchant = Merchant.find_by(id: id)
   
     expect(response).to be_successful
@@ -71,5 +71,26 @@ describe 'New API' do
     expect(response).to be_successful
     expect(Merchant.count).to eq(0)
     expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'can show items related to merchant' do 
+    merchant1 = create :merchant
+    item1 = create(:item, merchant_id: merchant1.id)
+    item2 = create(:item, merchant_id: merchant1.id)
+    merchant2 = create :merchant
+    item3 = create(:item, merchant_id: merchant2.id)
+    item4 = create(:item, merchant_id: merchant2.id)
+
+    get "/api/v1/merchants/#{merchant2.id}/items"
+  
+    expect(response).to be_successful
+
+    items = JSON.parse(response.body, symbolize_names: true)
+    expect(items[:data].count).to eq(2)
+
+    ids = items[:data].map do |item|
+      item[:id]
+    end
+    expect(ids).to eq([item3.id.to_s, item4.id.to_s])
   end
 end
