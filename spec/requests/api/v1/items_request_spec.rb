@@ -98,4 +98,16 @@ describe 'Items API' do
     expect(response).to be_successful
     expect(json[:data][:id]).to eq(@merchant.id.to_s)
   end
+
+  it 'can search for a single item based on a match' do
+    item1 = create(:item, {name: "Susan Sarandon", merchant_id: @merchant.id})
+    item2 = create(:item, {name: "Tim Allen", merchant_id: @merchant.id})
+    item3 = create(:item, {name: "Sally Suspicious", merchant_id: @merchant.id})
+    search_params = {attribute: 'name', query: 'sus'}
+    get "/api/v1/items/find", params: search_params
+
+    expect(response).to be_successful
+    json = JSON.parse(response.body, symbolize_names: true)
+    expect(json[:data][:id]).to eq(item1.id.to_s)
+  end
 end
