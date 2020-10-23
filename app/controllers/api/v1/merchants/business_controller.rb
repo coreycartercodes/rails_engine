@@ -6,8 +6,7 @@ def most_revenue
 end
 
 def revenue
-  id = params[:id]
-  render json: MerchantSerializer.new(Merchant.merchant_revenue(id))
+  render json: RevenueSerializer.new(Merchant.merchant_revenue(params[:id]))
 end
 
 end
