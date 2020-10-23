@@ -103,7 +103,7 @@ describe 'Items API' do
     item1 = create(:item, {name: "Susan Sarandon", merchant_id: @merchant.id})
     item2 = create(:item, {name: "Tim Allen", merchant_id: @merchant.id})
     item3 = create(:item, {name: "Sally Suspicious", merchant_id: @merchant.id})
-    search_params = {attribute: 'name', query: 'sus'}
+    search_params = {'name' => 'sus'}
     get "/api/v1/items/find", params: search_params
 
     expect(response).to be_successful
